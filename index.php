@@ -1,10 +1,10 @@
 <?php
     require_once('conexion.php');
 
-    $sql = "SELECT a.id, a.nombre AS articulo, a.descripcion, c.nombre AS categoria, a.stock 
-            FROM articulos a 
-            LEFT JOIN categorias c ON c.id = a.id_categoria 
-            WHERE a.estado = 1;";
+    $sql = "SELECT p.id, p.codigo, p.nombre AS producto, c.nombre AS categoria, p.precio, p.cantidad, p.img
+            FROM productos p 
+            LEFT JOIN categorias c ON c.id = p.id_categoria 
+            WHERE p.estado = 1;";
     $result = $conexion->query($sql);
 
     $opt_categorias = "SELECT id, nombre FROM categorias";
@@ -19,15 +19,18 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Gestión de articulos</h1>
+    <h1>Almacén Mercatienda</h1>
+    <h2>Gestión de Productos</h2>
 
     <table border="1">
         <tr>
             <th>Id</th>
-            <th>Articulo</th>
-            <th>Descripción</th>
+            <th>Código</th>
+            <th>Producto</th>
             <th>Categoria</th>
-            <th>Stock</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Imágen</th>
             <th>Modificar</th>
             <th>Eliminar</th>
         </tr>
@@ -36,11 +39,14 @@
             if ($result->num_rows > 0) {
                 // Salida de datos por cada fila
                 while($row = $result->fetch_assoc()) {
+                    $img = $row["img"];
                     echo "<tr><td>" . $row["id"] . "</td>";
-                    echo "<td>" . $row["articulo"] . "</td>";
-                    echo "<td>" . $row["descripcion"] . "</td>";
+                    echo "<td>" . $row["codigo"] . "</td>";
+                    echo "<td>" . $row["producto"] . "</td>";
                     echo "<td>" . $row["categoria"] . "</td>";
-                    echo "<td>" . $row["stock"] . "</td>";
+                    echo "<td>" . $row["precio"] . "</td>";
+                    echo "<td>" . $row["cantidad"] . "</td>";
+                    echo "<td>" . "<img src='$img' style='width: 50px; height: auto;'>" . "</td>";
                     echo "<td>" . "<a href='modificar.php?id=" . $row["id"] . "'>Modificar</a>" . "</td>";
                     echo "<td>" . "<a href='eliminar.php?id=" . $row["id"] . "' onclick='return confirm(\"¿Estás seguro de que quieres eliminar este artículo?\")'>Eliminar</a>" . "</td>";
                     echo "</td></tr>";
@@ -51,12 +57,12 @@
 
     </table>
 
-    <h2>Crear Nuevo Articulo</h2>
-    <form action="crear.php" method="post">
-        <label for="articulo">Nombre artículo:</label>
-        <input type="text" name="articulo" required><br>
-        <label for="descripcion">Descripción:</label>
-        <input type="text" name="descripcion" required><br>
+    <h2>Crear Nuevo Producto</h2>
+    <form action="crear.php" method="post" enctype="multipart/form-data">
+        <label for="producto">Nombre producto:</label>
+        <input type="text" name="producto" required><br>
+        <label for="codigo">Código:</label>
+        <input type="text" name="codigo" required><br>
 
         <label for="categoria">Categoria:</label>
         <select id="categoria" name="categoria" required>
@@ -70,8 +76,15 @@
             ?>
         </select><br>
 
-        <label for="stock">Stock:</label>
-        <input type="number" name="stock" required><br>
+        <label for="precio">Precio:</label>
+        <input type="number" name="precio" required><br>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" name="cantidad" required><br>
+
+        <label for="img">Imágen:</label>
+        <input type="file" name="img" required><br>
+
         <input type="submit" value="Crear">
     </form>
 
