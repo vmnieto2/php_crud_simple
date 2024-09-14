@@ -84,45 +84,76 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Modificar Producto</title>
 </head>
 <body>
 
-<h2>Modificar Producto</h2>
-<form action="modificar.php" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="id" value="<?php echo $id; ?>">
-    <label for="codigo">Código:</label>
-    <input type="text" name="codigo" value="<?php echo $row['codigo']; ?>" required><br>
-    <label for="producto">Producto:</label>
-    <input type="text" name="producto" value="<?php echo $row['producto']; ?>" required><br>
+    <div class="container text-center">
+        <h2>Modificar Producto</h2>
+    </div>
 
-    <label for="categoria">Categoria:</label>
-    <select id="categoria" name="categoria" required>
-        <?php
-        if ($opciones_result->num_rows > 0) {
-            while($opcion = $opciones_result->fetch_assoc()) {
-                $selected = $row['id_categoria'] == $opcion['id'] ? 'selected' : '';
-                echo "<option value='" . $opcion["id"] . "' $selected>" . $opcion["nombre"] . "</option>";
-            }
-        }
-        ?>
-    </select><br>
+    <div class="container mt-4">
+        <form action="modificar.php" method="post" enctype="multipart/form-data">
 
-    <label for="precio">Precio:</label>
-    <input type="number" name="precio" value="<?php echo $row['precio']; ?>" required><br>
+            <input type="hidden" name="id" value="<?php echo $id; ?>">
 
-    <label for="cantidad">Cantidad:</label>
-    <input type="number" name="cantidad" value="<?php echo $row['cantidad']; ?>" required><br>
+            <div class="mb-3">
+                <label for="codigo" class="form-label">Código:</label>
+                <input type="text" class="form-control" name="codigo" value="<?php echo $row['codigo']; ?>" required>
+            </div>
 
-    <label for="img">Imágen:</label>
-    <input type="file" name="img"><br>
+            <div class="mb-3">
+                <label for="producto" class="form-label">Nombre producto:</label>
+                <input type="text" class="form-control" name="producto" value="<?php echo $row['producto']; ?>" required>
+            </div>
 
-    <!-- Mostrar la imagen existente -->
-    <label for="img">Foto actual:</label>
-    <img src="<?php echo $row['img']; ?>" style="width: 100px; height: auto;"><br>
+            <div class="mb-3">
+                <label for="categoria" class="form-label">Categoria:</label>
+                <select class="form-select" aria-label="Default select example" id="categoria" name="categoria" required>
+                    <?php
+                        if ($opciones_result->num_rows > 0) {
+                            while($opcion = $opciones_result->fetch_assoc()) {
+                                $selected = $row['id_categoria'] == $opcion['id'] ? 'selected' : '';
+                                echo "<option value='" . $opcion["id"] . "' $selected>" . $opcion["nombre"] . "</option>";
+                            }
+                        }
+                    ?>
+                </select>
+            </div>
 
-    <input type="submit" value="Actualizar">
-</form>
+            <div class="mb-3">
+                <label for="precio" class="form-label">Precio:</label>
+                <input type="number" class="form-control" name="precio" value="<?php echo $row['precio']; ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="cantidad" class="form-label">Cantidad:</label>
+                <input type="number" class="form-control" name="cantidad" value="<?php echo $row['cantidad']; ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <!-- Mostrar la imagen existente -->
+                <label for="img">Foto actual:</label>
+                <img src="<?php echo $row['img']; ?>" class="img-thumbnail rounded-circle" style="width: 75px; height: auto;">
+            </div>
+
+            <div class="mb-3">
+                <label for="img" class="form-label">Imágen:</label>
+                <input class="form-control" type="file" name="img">
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-success">Actualizar</button>
+            </div>
+            <div class="mb-3">
+                <a href="index.php" class='btn btn-secondary'>Regresar</a>
+            </div>
+        </form>
+
+    </div>
+
 
 </body>
 </html>

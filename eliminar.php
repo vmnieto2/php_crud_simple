@@ -1,7 +1,7 @@
 <?php
 require_once('conexion.php');
 
-$id = $_GET["id"];
+$id = $_POST["id"];
 
 $sql = "UPDATE productos SET estado=0 WHERE id=$id";
 
